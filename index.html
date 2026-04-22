@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FXFlow – Conversor de Monedas Rápido y Confiable</title>
+  <meta name="description" content="FXFlow ofrece tipos de cambio en tiempo real sin comisiones ocultas. Convierte divisas al instante con nuestro conversor rápido y confiable." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ========== HEADER / HERO ========== -->
+  <header class="hero">
+    <h1 class="hero__title">Conversor de Monedas Rápido y Confiable</h1>
+    <p class="hero__subtitle">Tipos de cambio en tiempo real, sin comisiones ocultas.</p>
+  </header>
+
+  <!-- ========== MAIN ========== -->
+  <main class="main">
+
+    <!-- Converter Card -->
+    <section class="card converter-card" aria-label="Currency Converter">
+
+      <!-- Result Display -->
+      <div class="result-display" id="result-display">
+        <span class="result-display__label">MONTO CONVERTIDO</span>
+        <div class="result-display__row">
+          <div class="result-display__from-amount">
+            <span id="display-from-amount">1.00</span>
+            <span class="result-display__from-code" id="display-from-code">USD</span>
+            <span class="result-equals">=</span>
+          </div>
+          <div class="result-display__to-amount">
+            <span id="display-to-amount">...</span>
+            <span class="result-display__to-code" id="display-to-code">VES</span>
+          </div>
+          <div class="live-badge" id="live-badge">
+            <span class="live-badge__dot"></span>
+            <span>EN VIVO</span>
+          </div>
+        </div>
+        <div class="result-display__rates" id="rate-info">
+          <span id="rate-forward">Cargando tasa...</span>
+          <span class="rate-separator">|</span>
+          <span id="rate-inverse">...</span>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+
+        <!-- Amount -->
+        <div class="field-group">
+          <label class="field-label" for="amount-input">CANTIDAD</label>
+          <div class="amount-wrapper">
+            <span class="amount-symbol" id="currency-symbol">$</span>
+            <input
+              type="number"
+              id="amount-input"
+              class="amount-input"
+              value="1"
+              min="0"
+              step="any"
+              placeholder="0,00"
+              aria-label="Amount to convert"
+            />
+          </div>
+        </div>
+
+        <!-- FROM / SWAP / TO -->
+        <div class="currency-row">
+          <!-- FROM -->
+          <div class="currency-field">
+            <label class="field-label" for="from-btn">DE</label>
+            <button class="currency-btn" id="from-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Moneda de origen">
+              <span class="currency-btn__flag" id="from-flag">🇺🇸</span>
+              <span class="currency-btn__text">
+                <span class="currency-btn__code" id="from-code-display">USD</span>
+                <span class="currency-btn__name" id="from-name-display">Dólar Estadounidense</span>
+              </span>
+              <svg class="currency-btn__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="currency-dropdown" id="from-dropdown" role="listbox" aria-label="Seleccionar moneda de origen"></div>
+          </div>
+
+          <!-- SWAP -->
+          <button class="swap-btn" id="swap-btn" aria-label="Intercambiar monedas" title="Intercambiar monedas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 16V4m0 0L3 8m4-4l4 4"/>
+              <path d="M17 8v12m0 0l4-4m-4 4l-4-4"/>
+            </svg>
+          </button>
+
+          <!-- TO -->
+          <div class="currency-field">
+            <label class="field-label" for="to-btn">A</label>
+            <button class="currency-btn" id="to-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Moneda de destino">
+              <span class="currency-btn__flag" id="to-flag">🇻🇪</span>
+              <span class="currency-btn__text">
+                <span class="currency-btn__code" id="to-code-display">VES</span>
+                <span class="currency-btn__name" id="to-name-display">Bolívar Venezolano</span>
+              </span>
+              <svg class="currency-btn__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="currency-dropdown" id="to-dropdown" role="listbox" aria-label="Seleccionar moneda de destino"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Conversion History -->
+    <section class="history-section" aria-label="Conversion History">
+      <button class="history-toggle" id="history-toggle" aria-expanded="true" aria-controls="history-list" aria-label="Historial de conversiones">
+        <span>HISTORIAL DE CONVERSIONES</span>
+        <svg class="history-chevron" id="history-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </button>
+
+      <div class="history-list-wrapper" id="history-list-wrapper">
+        <div class="history-list card" id="history-list" role="list">
+          <!-- items injected by JS -->
+          <p class="history-empty" id="history-empty">Aún no hay conversiones.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="footer__brand">
+      <svg class="footer__logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="14" stroke="#38bdf8" stroke-width="2"/>
+        <path d="M10 16 Q16 8 22 16 Q16 24 10 16Z" fill="#38bdf8" opacity="0.8"/>
+      </svg>
+      <span class="footer__brand-name">FXFlow</span>
+    </div>
+    <p class="footer__copy">© 2024 FXFlow Global. Tipos de cambio provistos por la API de FinancialNode.</p>
+    <nav class="footer__links" aria-label="Navegación del pie de página">
+      <a href="#" id="footer-privacy">Política de Privacidad</a>
+      <a href="#" id="footer-terms">Términos de Servicio</a>
+      <a href="#" id="footer-api">Documentación API</a>
+      <a href="#" id="footer-help">Centro de Ayuda</a>
+    </nav>
+  </footer>
+
+  <script src="app.js?v=6"></script>
+</body>
+</html>
